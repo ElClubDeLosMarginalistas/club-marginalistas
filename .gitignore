@@ -1,0 +1,17 @@
+# Python
+.venv/
+__pycache__/
+*.pyc
+*.pyo
+.env
+
+# Reflex
+.web/
+.states/
+reflex.db
+
+# VSCode
+.vscode/
+
+# Sistema
+.DS_Store
