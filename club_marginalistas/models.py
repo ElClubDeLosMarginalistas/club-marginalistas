@@ -1,14 +1,15 @@
-from dataclasses import dataclass
+from sqlmodel import SQLModel, Field
+from typing import Optional
 from datetime import date
 
 
-@dataclass
-class Post:
-    slug: str
+class Post(SQLModel, table=True):
+    id: Optional[int] = Field(default=None, primary_key=True)
+    slug: str = Field(unique=True, index=True)
     title: str
     description: str
     author: str
     date: str
-    image: str
-    category: str
+    image: str = ""
+    category: str = "General"
     content: str

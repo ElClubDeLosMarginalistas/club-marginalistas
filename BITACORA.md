@@ -27,9 +27,29 @@ club-marginalistas/
 │       └── post.py             ← página individual
 ├── rxconfig.py
 └── requirements.txt
+
 Funcionando:
 
 Página principal con tarjetas de posts
 Página individual al hacer click
 Botón volver al blog
 Posts en Markdown con frontmatter
+
+Sesión 2 — 06 Mar 2025
+
+Infraestructura y cuentas:
+
+Dominio elclubdelosmarginalistas.com en Namecheap ✅
+Gmail elclubdelosmarginalistas@gmail.com creado ✅
+Cuenta GitHub ElClubDeLosMarginalistas creada ✅
+Azure descartado
+Zoho y Private Email descartados (sin tier gratis)
+
+Control de versiones:
+
+Git 2.43.0 instalado en Ubuntu ✅
+Git configurado con nombre y correo del proyecto ✅
+Repositorio club-marginalistas creado en GitHub (privado) ✅
+.gitignore configurado ✅
+Primer commit: 13 archivos, 307 líneas ✅
+Código subido a GitHub con token de acceso ✅
