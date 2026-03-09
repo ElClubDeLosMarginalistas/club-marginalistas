@@ -1,5 +1,13 @@
 import reflex as rx
 from club_marginalistas.utils import get_all_posts
+from club_marginalistas.models import Post
+
+
+class IndexState(rx.State):
+    posts: list[Post] = []
+
+    def load_posts(self):
+        self.posts = get_all_posts()
 
 
 def navbar() -> rx.Component:
@@ -7,18 +15,8 @@ def navbar() -> rx.Component:
         rx.hstack(
             rx.link(
                 rx.hstack(
-                    rx.text(
-                        "el club de los",
-                        font_size="0.9em",
-                        color="#86efac",
-                        font_weight="400",
-                    ),
-                    rx.text(
-                        "marginalistas",
-                        font_size="0.9em",
-                        color="white",
-                        font_weight="700",
-                    ),
+                    rx.text("el club de los", font_size="0.9em", color="#86efac", font_weight="400"),
+                    rx.text("marginalistas", font_size="0.9em", color="white", font_weight="700"),
                     spacing="1",
                 ),
                 href="/",
@@ -51,7 +49,7 @@ def navbar() -> rx.Component:
     )
 
 
-def post_card(post) -> rx.Component:
+def post_card(post: Post) -> rx.Component:
     return rx.link(
         rx.box(
             rx.box(
@@ -150,7 +148,6 @@ def hero() -> rx.Component:
 
 
 def index_page() -> rx.Component:
-    posts = get_all_posts()
     return rx.box(
         navbar(),
         hero(),
@@ -169,14 +166,15 @@ def index_page() -> rx.Component:
                     padding_bottom="1em",
                     margin_bottom="1.5em",
                 ),
-                rx.grid(
-                    *[post_card(p) for p in posts],
-                    columns="3",
-                    spacing="4",
-                    width="100%",
-                ) if posts else rx.text(
-                    "No hay entradas aún.",
-                    color="#6b7280",
+                rx.cond(
+                    IndexState.posts.length() > 0,
+                    rx.grid(
+                        rx.foreach(IndexState.posts, post_card),
+                        columns="3",
+                        spacing="4",
+                        width="100%",
+                    ),
+                    rx.text("No hay entradas aún.", color="#6b7280"),
                 ),
                 align_items="start",
                 width="100%",
@@ -187,16 +185,8 @@ def index_page() -> rx.Component:
         ),
         rx.box(
             rx.hstack(
-                rx.text(
-                    "© 2025 El Club de los Marginalistas",
-                    font_size="0.8em",
-                    color="#6b7280",
-                ),
-                rx.text(
-                    "elclubdelosmarginalistas.com",
-                    font_size="0.8em",
-                    color="#6b7280",
-                ),
+                rx.text("© 2025 El Club de los Marginalistas", font_size="0.8em", color="#6b7280"),
+                rx.text("elclubdelosmarginalistas.com", font_size="0.8em", color="#6b7280"),
                 justify="between",
                 width="100%",
                 max_width="1100px",
@@ -210,4 +200,5 @@ def index_page() -> rx.Component:
         min_height="100vh",
         background="#0c0c0f",
         color="white",
+        on_mount=IndexState.load_posts,
     )
