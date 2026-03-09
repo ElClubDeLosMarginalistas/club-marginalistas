@@ -53,3 +53,15 @@ Repositorio club-marginalistas creado en GitHub (privado) ✅
 .gitignore configurado ✅
 Primer commit: 13 archivos, 307 líneas ✅
 Código subido a GitHub con token de acceso ✅
+
+Sesión 3 — 07 Mar 2025
+
+Base de datos:
+
+Cuenta Supabase creada y vinculada con GitHub ✅
+Base de datos PostgreSQL en Supabase ✅
+Conexión via Session Pooler (IPv4 compatible) ✅
+Archivo .env con credenciales configurado ✅
+Tabla post creada con SQLModel ✅
+Post de bienvenida migrado a la base de datos ✅
+Commit y push a GitHub ✅
