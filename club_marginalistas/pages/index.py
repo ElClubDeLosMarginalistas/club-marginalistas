@@ -5,9 +5,19 @@ from club_marginalistas.models import Post
 
 class IndexState(rx.State):
     posts: list[Post] = []
+    active_filter: str = "Todas"
 
     def load_posts(self):
         self.posts = get_all_posts()
+
+    def set_filter(self, category: str):
+        self.active_filter = category
+
+    @rx.var
+    def filtered_posts(self) -> list[Post]:
+        if self.active_filter == "Todas":
+            return self.posts
+        return [p for p in self.posts if p.category.lower() == self.active_filter.lower()]
 
 
 def navbar() -> rx.Component:
@@ -153,32 +163,60 @@ def index_page() -> rx.Component:
         hero(),
         rx.box(
             rx.vstack(
-                rx.hstack(
-                    rx.text(
+                rx.text(
                         "ENTRADAS RECIENTES",
                         font_size="0.7em",
                         color="#6b7280",
                         letter_spacing="0.12em",
                         font_weight="500",
                     ),
+                    rx.hstack(
+                        rx.foreach(
+                            ["Todas", "Teoría", "Macro", "Micro", "General"],
+                            lambda cat: rx.button(
+                                cat,
+                                on_click=lambda: IndexState.set_filter(cat),
+                                background=rx.cond(
+                                    IndexState.active_filter == cat,
+                                    "#86efac",
+                                    "transparent",
+                                ),
+                                color=rx.cond(
+                                    IndexState.active_filter == cat,
+                                    "#0c0c0f",
+                                    "#6b7280",
+                                ),
+                                border=rx.cond(
+                                    IndexState.active_filter == cat,
+                                    "1px solid #86efac",
+                                    "1px solid #2a2a3a",
+                                ),
+                                border_radius="100px",
+                                font_size="0.72em",
+                                padding="0.3em 0.85em",
+                                cursor="pointer",
+                                _hover={"border_color": "#86efac", "color": "white"},
+                            ),
+                        ),
+                        spacing="2",
+                    ),
+                    justify="between",
+                    align="center",
                     width="100%",
                     border_bottom="1px solid #2a2a3a",
                     padding_bottom="1em",
                     margin_bottom="1.5em",
                 ),
                 rx.cond(
-                    IndexState.posts.length() > 0,
+                    IndexState.filtered_posts.length() > 0,
                     rx.grid(
-                        rx.foreach(IndexState.posts, post_card),
+                        rx.foreach(IndexState.filtered_posts, post_card),
                         columns="3",
                         spacing="4",
                         width="100%",
                     ),
                     rx.text("No hay entradas aún.", color="#6b7280"),
                 ),
-                align_items="start",
-                width="100%",
-            ),
             max_width="1100px",
             margin="0 auto",
             padding="0 2em 5em",

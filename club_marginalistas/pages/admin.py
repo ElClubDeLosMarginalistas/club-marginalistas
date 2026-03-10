@@ -14,6 +14,14 @@ class AdminState(rx.State):
     post_slug: str = ""
     message: str = ""
 
+    def set_title(self, value: str): self.title = value
+    def set_description(self, value: str): self.description = value
+    def set_author(self, value: str): self.author = value
+    def set_date(self, value: str): self.date = value
+    def set_category(self, value: str): self.category = value
+    def set_content(self, value: str): self.content = value
+    def set_post_slug(self, value: str): self.post_slug = value
+
     def load_posts(self):
         self.posts = get_all_posts()
 
@@ -42,7 +50,7 @@ class AdminState(rx.State):
 
     def delete_existing_post(self, slug: str):
         delete_post(slug)
-        self.message = f"🗑️ Post eliminado."
+        self.message = "🗑️ Post eliminado."
         self.load_posts()
 
 
@@ -145,15 +153,14 @@ def admin_page() -> rx.Component:
                                 width="100%",
                                 _focus={"border_color": "#86efac"},
                             )),
-                            field("Categoría", rx.input(
+                            field("Categoría", rx.select(
+                                ["General", "Teoría", "Macro", "Micro"],
                                 value=AdminState.category,
                                 on_change=AdminState.set_category,
-                                placeholder="General",
                                 background="#1a1a24",
                                 border="1px solid #2a2a3a",
                                 color="white",
                                 width="100%",
-                                _focus={"border_color": "#86efac"},
                             )),
                             field("Descripción", rx.input(
                                 value=AdminState.description,
