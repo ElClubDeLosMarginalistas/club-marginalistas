@@ -2,12 +2,12 @@ import reflex as rx
 from club_marginalistas.utils import get_all_posts, create_post, delete_post
 from club_marginalistas.models import Post
 from club_marginalistas.styles import (
-    colors, fonts, spacing, page_wrapper, admin_navbar, footer,
-    section_header, input_style, textarea_style, btn_primary,
-    panel, form_field, feedback_message, post_list_item, section_title
+    page_wrapper, admin_navbar, footer,
+    section_header, input_style, textarea_style,
+    select_style, btn_primary, panel, form_field,
+    feedback_message, post_list_item, page_section_title,
+    admin_content_wrapper, CATEGORIES_FORM
 )
-
-CATEGORIES = ["General", "Teoría", "Macro", "Micro"]
 
 
 class AdminState(rx.State):
@@ -60,7 +60,7 @@ def create_form() -> rx.Component:
                 form_field("Slug (URL)", rx.input(value=AdminState.post_slug, on_change=AdminState.set_post_slug, placeholder="2025-03-01-mi-post", **input_style)),
                 form_field("Autor", rx.input(value=AdminState.author, on_change=AdminState.set_author, placeholder="Tu nombre", **input_style)),
                 form_field("Fecha", rx.input(value=AdminState.date, on_change=AdminState.set_date, placeholder="2025-03-09", **input_style)),
-                form_field("Categoría", rx.select(CATEGORIES, value=AdminState.category, on_change=AdminState.set_category, background=colors["bg"], border=f"1px solid {colors['border']}", color=colors["text"], border_radius="4px", width="100%")),
+                form_field("Categoría", rx.select(CATEGORIES_FORM, value=AdminState.category, on_change=AdminState.set_category, **select_style)),
                 form_field("Descripción", rx.input(value=AdminState.description, on_change=AdminState.set_description, placeholder="Breve descripción", **input_style)),
                 columns="2", spacing="4", width="100%",
             ),
@@ -88,17 +88,11 @@ def posts_list() -> rx.Component:
 def admin_page() -> rx.Component:
     return page_wrapper(
         admin_navbar(),
-        rx.box(
-            rx.vstack(
-                section_title("NUEVO POST", "Crear entrada"),
-                feedback_message(AdminState.message),
-                create_form(),
-                posts_list(),
-                align_items="start", width="100%",
-            ),
-            max_width=spacing["admin_max"],
-            margin="0 auto",
-            padding="3em 2em 6em",
+        admin_content_wrapper(
+            page_section_title("NUEVO POST", "Crear entrada"),
+            feedback_message(AdminState.message),
+            create_form(),
+            posts_list(),
         ),
         footer(),
         on_mount=AdminState.load_posts,

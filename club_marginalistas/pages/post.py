@@ -3,7 +3,7 @@ from club_marginalistas.utils import get_all_posts
 from club_marginalistas.styles import (
     page_wrapper, navbar, footer,
     accent_divider, back_link, post_meta_header,
-    markdown_content, colors, fonts, spacing
+    markdown_content, post_content_wrapper, fonts, colors
 )
 
 
@@ -54,18 +54,10 @@ def post_not_found() -> rx.Component:
 def post_page() -> rx.Component:
     return page_wrapper(
         navbar(),
-        rx.box(
-            rx.vstack(
-                back_link(),
-                accent_divider(),
-                rx.cond(PostState.found, post_found(), post_not_found()),
-                align_items="start",
-                width="100%",
-                max_width=spacing["post_max"],
-                margin="0 auto",
-                padding="3em 2em 6em",
-                spacing="4",
-            ),
+        post_content_wrapper(
+            back_link(),
+            accent_divider(),
+            rx.cond(PostState.found, post_found(), post_not_found()),
         ),
         footer(),
         on_mount=PostState.load_post,
