@@ -3,7 +3,8 @@ from club_marginalistas.models import Post
 from club_marginalistas.utils import get_all_posts
 from club_marginalistas.styles import (
     page_wrapper, page_content, navbar, footer,
-    newsletter, hero, post_card, filters_bar, empty_state
+    newsletter, hero, post_card, filters_bar, empty_state,
+    CATEGORIES_FILTER,
 )
 
 
@@ -27,7 +28,10 @@ class IndexState(rx.State):
 def posts_grid() -> rx.Component:
     return rx.cond(
         IndexState.filtered_posts.length() > 0,
-        rx.grid(rx.foreach(IndexState.filtered_posts, post_card), columns="3", spacing="4", width="100%"),
+        rx.grid(
+            rx.foreach(IndexState.filtered_posts, post_card),
+            columns="3", spacing="4", width="100%",
+        ),
         empty_state(),
     )
 
