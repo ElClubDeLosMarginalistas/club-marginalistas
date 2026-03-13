@@ -10,7 +10,7 @@ from club_marginalistas.styles import (
 
 
 class PostState(rx.State):
-    post: Post = Post()   # un solo objeto en lugar de 7 vars sueltas
+    post: Post = Post()
     found: bool = False
 
     def load_post(self):
