@@ -580,3 +580,68 @@ def filters_bar(active_filter, set_filter) -> rx.Component:
 
 def empty_state(message: str = "No hay entradas en esta categoría.") -> rx.Component:
     return rx.box(rx.text(message, color=C["accent"], font_size="0.9em"), padding="3em 0")
+
+
+# ============================================
+# NAVBARS PARA PORTALES (minimalistas)
+# ============================================
+
+def login_navbar() -> rx.Component:
+    """Navbar minimalista para la página de login."""
+    return rx.box(
+        rx.hstack(
+            logo(),
+            justify="between", align="center",
+            width="100%", max_width=S["page_max"],
+            margin="0 auto", padding=f"0 {S['page_x']}",
+        ),
+        **navbar_box_style,
+    )
+
+def portal_navbar(label: str, on_logout) -> rx.Component:
+    """Navbar minimalista para admin y portal colaborador."""
+    return rx.box(
+        rx.hstack(
+            logo(),
+            rx.hstack(
+                rx.text(label, font_size="0.75em", color=C["accent"], letter_spacing="0.15em", font_weight="600"),
+                rx.button(
+                    "Cerrar sesión",
+                    on_click=on_logout,
+                    background="transparent",
+                    border=f"1px solid {C['border']}",
+                    color=C["muted"],
+                    font_size="0.75em", letter_spacing="0.05em",
+                    border_radius="4px", padding="0.3em 0.85em",
+                    cursor="pointer",
+                    _hover={"border_color": C["danger"], "color": C["danger"]},
+                    transition="all 0.2s",
+                ),
+                spacing="4", align="center",
+            ),
+            justify="between", align="center",
+            width="100%", max_width=S["page_max"],
+            margin="0 auto", padding=f"0 {S['page_x']}",
+        ),
+        **navbar_box_style,
+    )
+
+
+def status_badge(status) -> rx.Component:
+    """Badge de status para posts en el portal."""
+    return rx.box(
+        rx.text(status, font_size="0.65em", font_weight="600", letter_spacing="0.1em", text_transform="uppercase"),
+        background=rx.cond(
+            status == "published", "rgba(74,127,165,0.15)",
+            rx.cond(status == "pending", "rgba(234,179,8,0.15)", "rgba(107,114,128,0.15)")
+        ),
+        color=rx.cond(
+            status == "published", C["accent"],
+            rx.cond(status == "pending", "#eab308", C["dim2"])
+        ),
+        border=rx.cond(
+            status == "published", f"1px solid {C['accent']}",
+            rx.cond(status == "pending", "1px solid #eab308", f"1px solid {C['dim']}")
+        ),
+        border_radius="3px", padding="0.2em 0.6em",
+    )

@@ -3,23 +3,23 @@ from club_marginalistas.utils import create_post, get_all_posts
 from club_marginalistas.models import Post
 from club_marginalistas.auth import AuthState
 from club_marginalistas.styles import (
-    page_wrapper, navbar, footer,
+    page_wrapper, portal_navbar,
     panel, form_field, btn_primary, feedback_message,
     section_header, input_style, textarea_style, select_style,
-    page_section_title, post_list_item,
+    page_section_title, status_badge,
     admin_content_wrapper, CATEGORIES_FORM,
 )
 
 
 class PortalState(AuthState):
-    posts:     list[Post] = []
-    title:     str = ""
+    posts:       list[Post] = []
+    title:       str = ""
     description: str = ""
-    date:      str = ""
-    category:  str = "General"
-    content:   str = ""
-    post_slug: str = ""
-    message:   str = ""
+    date:        str = ""
+    category:    str = "General"
+    content:     str = ""
+    post_slug:   str = ""
+    message:     str = ""
 
     def set_title(self, v):       self.title = v
     def set_description(self, v): self.description = v
@@ -31,8 +31,8 @@ class PortalState(AuthState):
     def load_posts(self):
         if not self.logged_in:
             return rx.redirect("/login")
-        all_posts = get_all_posts("pending") + get_all_posts("published")
-        self.posts = [p for p in all_posts if p.author == self.user_email]
+        all_posts = get_all_posts("pending") + get_all_posts("published") + get_all_posts("draft")
+        self.posts = [p for p in all_posts if p.author == self.user_name or p.author == self.user_email]
 
     def submit_post(self):
         if not self.title or not self.post_slug or not self.content:
@@ -41,7 +41,7 @@ class PortalState(AuthState):
         create_post(Post(
             slug=self.post_slug, title=self.title,
             description=self.description,
-            author=self.user_email,
+            author=self.user_name,
             date=self.date, category=self.category,
             content=self.content,
             status="pending",
@@ -78,7 +78,19 @@ def my_posts() -> rx.Component:
     return panel(
         rx.vstack(
             section_header("MIS ENTRADAS"),
-            rx.foreach(PortalState.posts, lambda post: post_list_item(post, None)),
+            rx.foreach(
+                PortalState.posts,
+                lambda post: rx.hstack(
+                    rx.vstack(
+                        rx.text(post.title, font_weight="500", font_size="0.9em"),
+                        rx.text(post.date,  font_size="0.72em"),
+                        align_items="start", spacing="0",
+                    ),
+                    status_badge(post.status),
+                    justify="between", align="center", width="100%",
+                    padding="1em 0", border_bottom="1px solid var(--border)",
+                ),
+            ),
             align_items="start", width="100%", spacing="0",
         ),
         margin_top="2em",
@@ -87,13 +99,12 @@ def my_posts() -> rx.Component:
 
 def portal_page() -> rx.Component:
     return page_wrapper(
-        navbar(),
+        portal_navbar("PORTAL COLABORADOR", PortalState.logout),
         admin_content_wrapper(
-            page_section_title("PORTAL COLABORADOR", "Nueva entrada"),
+            page_section_title("NUEVA ENTRADA", "Redactar post"),
             feedback_message(PortalState.message),
             submit_form(),
             my_posts(),
         ),
-        footer(),
         on_mount=PortalState.load_posts,
     )

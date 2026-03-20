@@ -1,7 +1,7 @@
 import reflex as rx
 from club_marginalistas.utils import auth_login, auth_logout, get_usuario_by_email
 from club_marginalistas.styles import (
-    page_wrapper, navbar, footer,
+    page_wrapper, login_navbar,
     panel, form_field, btn_primary, feedback_message,
     input_style, page_hero,
 )
@@ -10,6 +10,7 @@ from club_marginalistas.styles import (
 class AuthState(rx.State):
     user_email: str = ""
     user_role:  str = ""
+    user_name:  str = ""  # nombre real del usuario
     logged_in:  bool = False
     message:    str = ""
     email:      str = ""
@@ -17,6 +18,12 @@ class AuthState(rx.State):
 
     def set_email(self, v):    self.email = v
     def set_password(self, v): self.password = v
+
+    def init_login(self):
+        """Limpiar estado al cargar la página de login."""
+        self.message  = ""
+        self.email    = ""
+        self.password = ""
 
     def login(self):
         if not self.email or not self.password:
@@ -32,6 +39,7 @@ class AuthState(rx.State):
             return
         self.user_email = usuario.email
         self.user_role  = usuario.role
+        self.user_name  = usuario.name
         self.logged_in  = True
         self.message    = ""
         if usuario.role == "admin":
@@ -42,13 +50,17 @@ class AuthState(rx.State):
         auth_logout()
         self.user_email = ""
         self.user_role  = ""
+        self.user_name  = ""
         self.logged_in  = False
+        self.message    = ""
+        self.email      = ""
+        self.password   = ""
         return rx.redirect("/login")
 
 
 def login_page() -> rx.Component:
     return page_wrapper(
-        navbar(),
+        login_navbar(),
         page_hero("ACCESO", "Iniciar sesión"),
         rx.box(
             panel(
@@ -68,5 +80,5 @@ def login_page() -> rx.Component:
             ),
             max_width="420px", margin="0 auto", padding="3em 2em 6em",
         ),
-        footer(),
+        on_mount=AuthState.init_login,
     )
