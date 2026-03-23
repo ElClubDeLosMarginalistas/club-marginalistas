@@ -10,7 +10,7 @@ from club_marginalistas.styles import (
 class AuthState(rx.State):
     user_email: str = ""
     user_role:  str = ""
-    user_name:  str = ""  # nombre real del usuario
+    user_name:  str = ""
     logged_in:  bool = False
     message:    str = ""
     email:      str = ""
@@ -19,8 +19,11 @@ class AuthState(rx.State):
     def set_email(self, v):    self.email = v
     def set_password(self, v): self.password = v
 
+    def handle_key_down(self, key: str):
+        if key == "Enter":
+            return self.login()
+
     def init_login(self):
-        """Limpiar estado al cargar la página de login."""
         self.message  = ""
         self.email    = ""
         self.password = ""
@@ -68,10 +71,12 @@ def login_page() -> rx.Component:
                     feedback_message(AuthState.message),
                     form_field("Email", rx.input(
                         value=AuthState.email, on_change=AuthState.set_email,
+                        on_key_down=AuthState.handle_key_down,
                         placeholder="tu@correo.com", type="email", **input_style,
                     )),
                     form_field("Contraseña", rx.input(
                         value=AuthState.password, on_change=AuthState.set_password,
+                        on_key_down=AuthState.handle_key_down,
                         placeholder="••••••••", type="password", **input_style,
                     )),
                     btn_primary("Ingresar", on_click=AuthState.login, width="100%"),

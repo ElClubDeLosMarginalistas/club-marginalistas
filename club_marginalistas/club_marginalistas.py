@@ -7,6 +7,8 @@ from club_marginalistas.pages.colaboradores import colaboradores_page
 from club_marginalistas.pages.trading import trading_page
 from club_marginalistas.auth import login_page
 from club_marginalistas.portal import portal_page
+from club_marginalistas.pages.page_404 import page_404
+from club_marginalistas.pages.colaboradores import colaborador_page
 
 
 app = rx.App()
@@ -18,3 +20,5 @@ app.add_page(colaboradores_page, route="/colaboradores")
 app.add_page(trading_page, route="/trading")
 app.add_page(login_page,  route="/login")
 app.add_page(portal_page, route="/portal")
+app.add_page(page_404, route="/404")
+app.add_page(colaborador_page, route="/colaboradores/[slug]")
