@@ -170,6 +170,18 @@ def create_colaborador_completo(colaborador: Colaborador, password: str) -> dict
     return {"ok": True}
 
 
+def update_colaborador(slug: str, data: dict):
+    """Actualiza los campos del colaborador. No modifica email ni acceso Auth."""
+    with Session(engine) as session:
+        c = session.exec(select(Colaborador).where(Colaborador.slug == slug)).first()
+        if not c:
+            return
+        for key, value in data.items():
+            setattr(c, key, value)
+        session.add(c)
+        session.commit()
+
+
 def delete_colaborador(slug: str):
     """Elimina colaborador, su usuario y su acceso en Supabase Auth."""
     with Session(engine) as session:
