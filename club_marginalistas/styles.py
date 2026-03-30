@@ -284,7 +284,7 @@ def lang_toggle() -> rx.Component:
 
 
 def _navbar_inner(right_content) -> rx.Component:
-    """Base compartida entre navbar y admin_navbar."""
+    """Base compartida entre variantes de navbar."""
     return rx.hstack(
         logo(),
         right_content,
@@ -304,19 +304,6 @@ def navbar() -> rx.Component:
                 nav_link("Trading", "/trading"),
                 lang_toggle(),
                 spacing="6", align="center",
-            )
-        ),
-        **navbar_box_style,
-    )
-
-
-def admin_navbar() -> rx.Component:
-    return rx.box(
-        _navbar_inner(
-            rx.hstack(
-                rx.text("PANEL ADMIN", font_size="0.75em", color=C["accent"], letter_spacing="0.15em", font_weight="600"),
-                nav_link("← Ver blog", "/"),
-                spacing="4", align="center",
             )
         ),
         **navbar_box_style,
@@ -463,24 +450,6 @@ def markdown_content(content) -> rx.Component:
             "h3": lambda text: rx.heading(text, size="5", color=C["silver"], font_family=fonts["serif"], margin_y="0.75em"),
             "p":  lambda text: rx.text(text, color=C["muted"], line_height="1.85", margin_bottom="1.25em"),
         },
-    )
-
-
-def post_list_item(post, on_delete) -> rx.Component:
-    return rx.hstack(
-        rx.vstack(
-            rx.text(post.title, font_weight="500", color=C["text"], font_size="0.9em", font_family=fonts["serif"]),
-            rx.hstack(
-                rx.text(post.slug, color=C["dim"], font_size="0.72em"),
-                rx.text("·", color=C["border"]),
-                rx.text(post.category, color=C["accent"], font_size="0.72em"),
-                spacing="2",
-            ),
-            align_items="start", spacing="0",
-        ),
-        btn_danger("Eliminar", on_click=on_delete),
-        justify="between", align="center", width="100%",
-        padding="1em 0", border_bottom=f"1px solid {C['border']}",
     )
 
 

@@ -5,7 +5,7 @@ from club_marginalistas.styles import (
     page_wrapper, navbar, footer,
     accent_divider, back_link, post_meta_header,
     markdown_content, post_content_wrapper,
-    fonts, colors,
+    fonts, C,
 )
 
 
@@ -39,7 +39,7 @@ def post_found() -> rx.Component:
 
 def post_not_found() -> rx.Component:
     return rx.vstack(
-        rx.heading("Post no encontrado", size="7", color=colors["text"], font_family=fonts["serif"]),
+        rx.heading("Post no encontrado", size="7", color=C["text"], font_family=fonts["serif"]),
         back_link(),
         align_items="start", spacing="4",
     )

@@ -7,7 +7,7 @@ from club_marginalistas.utils import (
     update_colaborador, delete_colaborador, get_colaborador_by_slug,
 )
 from club_marginalistas.models import Post, Usuario, Colaborador
-from club_marginalistas.auth import AuthState
+from club_marginalistas.pages.auth import AuthState
 from club_marginalistas.styles import (
     page_wrapper, portal_navbar,
     section_header, input_style, textarea_style, select_style,

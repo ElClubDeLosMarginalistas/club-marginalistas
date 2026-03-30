@@ -2,7 +2,7 @@ import reflex as rx
 from club_marginalistas.styles import (
     page_wrapper, page_content, page_hero,
     navbar, footer,
-    panel, section_header, accent_divider, back_link, btn_outline,
+    panel, section_header, accent_divider, back_link,
 )
 
 

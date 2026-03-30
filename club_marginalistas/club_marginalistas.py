@@ -5,8 +5,8 @@ from club_marginalistas.pages.admin import admin_page
 from club_marginalistas.pages.acerca import acerca_page
 from club_marginalistas.pages.colaboradores import colaboradores_page
 from club_marginalistas.pages.trading import trading_page
-from club_marginalistas.auth import login_page
-from club_marginalistas.portal import portal_page
+from club_marginalistas.pages.auth import login_page
+from club_marginalistas.pages.portal import portal_page
 from club_marginalistas.pages.page_404 import page_404
 from club_marginalistas.pages.colaboradores import colaborador_page
 

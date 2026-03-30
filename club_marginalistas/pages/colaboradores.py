@@ -1,5 +1,4 @@
 import reflex as rx
-import json
 from club_marginalistas.models import Colaborador, Post
 from club_marginalistas.utils import get_all_colaboradores, get_colaborador_by_slug, get_posts_by_author
 from club_marginalistas.styles import (
