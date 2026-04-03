@@ -1,10 +1,11 @@
 import reflex as rx
 from club_marginalistas.utils import (
     get_all_posts_admin, get_pending_posts,
-    delete_post, update_post_status,
+    delete_post, update_post_status, get_post_by_slug,
     get_all_usuarios,
     get_all_colaboradores, create_colaborador_completo,
     update_colaborador, delete_colaborador, get_colaborador_by_slug,
+    send_newsletter_post,
 )
 from club_marginalistas.models import Post, Usuario, Colaborador
 from club_marginalistas.pages.auth import AuthState
@@ -86,6 +87,9 @@ class AdminState(AuthState):
 
     def approve_post(self, slug: str):
         update_post_status(slug, "published")
+        post = get_post_by_slug(slug)
+        if post:
+            send_newsletter_post(post)
         self.message = "✅ Post aprobado y publicado."
         self.show_preview = False
         self.load_data()

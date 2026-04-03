@@ -1,6 +1,7 @@
 import reflex as rx
 from club_marginalistas.models import Colaborador, Post
 from club_marginalistas.utils import get_all_colaboradores, get_colaborador_by_slug, get_posts_by_author
+from club_marginalistas.newsletter_state import NewsletterState
 from club_marginalistas.styles import (
     page_wrapper, page_content, page_hero,
     navbar, footer, newsletter,
@@ -271,7 +272,12 @@ def colaboradores_page() -> rx.Component:
                 align_items="start", width="100%", spacing="0",
             ),
         ),
-        newsletter(),
+        newsletter(
+            NewsletterState.email,
+            NewsletterState.set_email,
+            NewsletterState.subscribe,
+            NewsletterState.message,
+        ),
         footer(),
         on_mount=ColaboradoresState.load,
     )

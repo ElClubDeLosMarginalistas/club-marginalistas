@@ -1,6 +1,7 @@
 import reflex as rx
 from club_marginalistas.models import Post
 from club_marginalistas.utils import get_all_posts
+from club_marginalistas.newsletter_state import NewsletterState
 from club_marginalistas.styles import (
     page_wrapper, page_content, navbar, footer,
     newsletter, hero, post_card, filters_bar, empty_state,
@@ -47,7 +48,12 @@ def index_page() -> rx.Component:
                 align_items="start", width="100%",
             ),
         ),
-        newsletter(),
+        newsletter(
+            NewsletterState.email,
+            NewsletterState.set_email,
+            NewsletterState.subscribe,
+            NewsletterState.message,
+        ),
         footer(),
         on_mount=IndexState.load_posts,
     )

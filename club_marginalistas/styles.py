@@ -336,22 +336,35 @@ def footer() -> rx.Component:
     )
 
 
-def newsletter() -> rx.Component:
+def newsletter(email_var, set_email_fn, on_subscribe_fn, message_var) -> rx.Component:
     return rx.box(
         rx.box(
-            rx.hstack(
-                rx.vstack(
-                    section_header("NEWSLETTER"),
-                    rx.heading("Análisis directo a tu correo", size="5", color=C["text"], font_family=fonts["serif"]),
-                    rx.text("Sin ruido. Solo economía.", color=C["dim2"], font_size="0.875em"),
-                    align_items="start", spacing="2",
-                ),
+            rx.vstack(
                 rx.hstack(
-                    rx.input(placeholder="tu@correo.com", **{**_input_base, "width": "260px"}),
-                    btn_primary("Suscribirse"),
-                    spacing="3",
+                    rx.vstack(
+                        section_header("NEWSLETTER"),
+                        rx.heading("Análisis directo a tu correo", size="5", color=C["text"], font_family=fonts["serif"]),
+                        rx.text("Sin ruido. Solo economía.", color=C["dim2"], font_size="0.875em"),
+                        align_items="start", spacing="2",
+                    ),
+                    rx.hstack(
+                        rx.input(
+                            value=email_var,
+                            on_change=set_email_fn,
+                            placeholder="tu@correo.com",
+                            type="email",
+                            **{**_input_base, "width": "260px"},
+                        ),
+                        btn_primary("Suscribirse", on_click=on_subscribe_fn),
+                        spacing="3",
+                    ),
+                    justify="between", align="center", width="100%",
                 ),
-                justify="between", align="center", width="100%",
+                rx.cond(
+                    message_var != "",
+                    rx.text(message_var, font_size="0.8em", color=C["accent"], padding_top="0.5em"),
+                ),
+                align_items="start", width="100%", spacing="0",
             ),
             max_width=S["page_max"], margin="0 auto", padding="3em 2em",
         ),

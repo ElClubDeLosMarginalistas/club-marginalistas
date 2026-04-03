@@ -1,0 +1,21 @@
+import reflex as rx
+from club_marginalistas.utils import subscribe_newsletter
+
+
+class NewsletterState(rx.State):
+    email: str = ""
+    message: str = ""
+
+    def set_email(self, v: str):
+        self.email = v
+
+    def subscribe(self):
+        if not self.email or "@" not in self.email:
+            self.message = "Ingresa un email válido."
+            return
+        result = subscribe_newsletter(self.email)
+        if result["ok"]:
+            self.message = "✅ ¡Suscripción exitosa!"
+            self.email = ""
+        else:
+            self.message = "❌ Error al suscribirse. Intenta de nuevo."
