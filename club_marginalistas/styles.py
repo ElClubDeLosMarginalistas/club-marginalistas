@@ -47,7 +47,7 @@ S = {
 }
 
 # --- CATEGORÍAS ---
-CATEGORIES_FILTER = ["Todas", "Teoría", "Macro", "Micro", "General"]
+CATEGORIES_FILTER = ["Todas", "Trading", "Economía"]
 CATEGORIES_FORM   = ["General", "Teoría", "Macro", "Micro"]
 
 # ============================================
@@ -301,7 +301,6 @@ def navbar() -> rx.Component:
                 nav_link("Inicio", "/"),
                 nav_link("Acerca", "/acerca"),
                 nav_link("Colaboradores", "/colaboradores"),
-                nav_link("Trading", "/trading"),
                 lang_toggle(),
                 spacing="6", align="center",
             )
@@ -315,7 +314,7 @@ def navbar() -> rx.Component:
 # ============================================
 
 def footer() -> rx.Component:
-    nav_items = [("Inicio", "/"), ("Acerca", "/acerca"), ("Colaboradores", "/colaboradores"), ("Trading", "/trading")]
+    nav_items = [("Inicio", "/"), ("Acerca", "/acerca"), ("Colaboradores", "/colaboradores")]
     return rx.box(
         rx.hstack(
             rx.vstack(
