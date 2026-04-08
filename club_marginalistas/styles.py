@@ -313,22 +313,78 @@ def navbar() -> rx.Component:
 # CONTENIDO
 # ============================================
 
+def _social_icon_link(href: str, icon_name: str) -> rx.Component:
+    """Ícono de red social con rx.icon (Lucide)."""
+    return rx.link(
+        rx.icon(icon_name, size=18, color=C["dim2"]),
+        href=href,
+        _hover={"color": C["accent"], "opacity": "0.8"},
+        transition="opacity 0.2s",
+    )
+
+
+def _tiktok_icon_link(href: str) -> rx.Component:
+    """Ícono TikTok vía SVG inline."""
+    return rx.link(
+        rx.html(
+            '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor" style="display:block">'
+            '<path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.2-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/>'
+            '</svg>'
+        ),
+        href=href,
+        color=C["dim2"],
+        _hover={"color": C["accent"], "opacity": "0.8"},
+        transition="opacity 0.2s",
+        display="flex", align_items="center",
+    )
+
+
+def _telegram_icon_link(href: str) -> rx.Component:
+    """Ícono Telegram vía SVG inline."""
+    return rx.link(
+        rx.html(
+            '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor" style="display:block">'
+            '<path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/>'
+            '</svg>'
+        ),
+        href=href,
+        color=C["dim2"],
+        _hover={"color": C["accent"], "opacity": "0.8"},
+        transition="opacity 0.2s",
+        display="flex", align_items="center",
+    )
+
+
 def footer() -> rx.Component:
     nav_items = [("Inicio", "/"), ("Acerca", "/acerca"), ("Colaboradores", "/colaboradores")]
     return rx.box(
-        rx.hstack(
-            rx.vstack(
-                rx.text("El Club de los Marginalistas", font_size="0.85em", color=C["silver"], font_weight="600", font_family=fonts["serif"]),
-                rx.text("Pensamiento económico independiente.", font_size="0.75em", color=C["dim"]),
-                rx.text("elclubdelosmarginalistas.com", font_size="0.75em", color=C["accent"]),
-                align_items="start", spacing="1",
-            ),
+        rx.vstack(
             rx.hstack(
-                *[rx.link(t, href=h, font_size="0.75em", color=C["dim2"], _hover={"color": C["silver"]}) for t, h in nav_items],
-                spacing="5",
+                rx.vstack(
+                    rx.text("El Club de los Marginalistas", font_size="0.85em", color=C["silver"], font_weight="600", font_family=fonts["serif"]),
+                    rx.text("Pensamiento económico independiente.", font_size="0.75em", color=C["dim"]),
+                    rx.text("elclubdelosmarginalistas.com", font_size="0.75em", color=C["accent"]),
+                    align_items="start", spacing="1",
+                ),
+                rx.hstack(
+                    *[rx.link(t, href=h, font_size="0.75em", color=C["dim2"], _hover={"color": C["silver"]}) for t, h in nav_items],
+                    spacing="5",
+                ),
+                rx.text("© 2025 El Club de los Marginalistas", font_size="0.75em", color=C["dim"]),
+                justify="between", align="center", width="100%",
             ),
-            rx.text("© 2025 El Club de los Marginalistas", font_size="0.75em", color=C["dim"]),
-            justify="between", align="center", width="100%",
+            rx.box(height="1px", background=C["border"], width="100%", opacity="0.4"),
+            rx.hstack(
+                _social_icon_link("#", "youtube"),
+                _social_icon_link("#", "instagram"),
+                _tiktok_icon_link("#"),
+                _social_icon_link("#", "facebook"),
+                _social_icon_link("#", "twitter"),
+                _social_icon_link("#", "linkedin"),
+                _telegram_icon_link("#"),
+                spacing="5", align="center",
+            ),
+            spacing="4", width="100%",
             max_width=S["page_max"], margin="0 auto", padding=f"0 {S['page_x']}",
         ),
         border_top=f"1px solid {C['border']}", padding="2.5em 0", background=C["bg"],
