@@ -26,7 +26,7 @@ class AdminState(AuthState):
     preview_post:   Post              = Post()
     show_preview:   bool              = False
 
-    # Form colaborador
+    # Contributor form fields
     col_slug:       str = ""
     col_email:      str = ""
     col_password:   str = ""
@@ -46,7 +46,7 @@ class AdminState(AuthState):
 
     message: str = ""
 
-    # Estado modal edición
+    # Edit modal state
     editing_slug:   str  = ""
     show_edit:      bool = False
 
@@ -90,23 +90,23 @@ class AdminState(AuthState):
         post = get_post_by_slug(slug)
         if post:
             send_newsletter_post(post)
-        self.message = "✅ Post aprobado y publicado."
+        self.message = "✅ Post approved and published."
         self.show_preview = False
         self.load_data()
 
     def reject_post(self, slug: str):
         update_post_status(slug, "draft")
-        self.message = "🗑️ Post rechazado."
+        self.message = "🗑️ Post rejected."
         self.show_preview = False
         self.load_data()
 
     def confirm_delete_post(self, slug: str):
         delete_post(slug)
-        self.message = "🗑️ Post eliminado."
+        self.message = "🗑️ Post deleted."
         self.load_data()
 
     def open_edit(self, slug: str):
-        """Carga los datos del colaborador desde la DB y abre el modal."""
+        """Load contributor data from DB and open the modal."""
         c = get_colaborador_by_slug(slug)
         if not c:
             return
@@ -133,7 +133,7 @@ class AdminState(AuthState):
 
     def save_edit(self):
         if not self.col_name or not self.col_initials:
-            self.message = "❌ Nombre e iniciales son obligatorios."
+            self.message = "❌ Name and initials are required."
             return
         update_colaborador(self.editing_slug, {
             "name":         self.col_name,
@@ -150,13 +150,13 @@ class AdminState(AuthState):
             "email_public": self.col_email_pub,
             "order":        int(self.col_order or 0),
         })
-        self.message = f"✅ Colaborador {self.col_name} actualizado."
+        self.message = f"✅ Contributor {self.col_name} updated."
         self.show_edit = False
         self.load_data()
 
     def create_new_colaborador(self):
         if not self.col_slug or not self.col_name or not self.col_email or not self.col_password:
-            self.message = "❌ Slug, nombre, email y contraseña son obligatorios."
+            self.message = "❌ Slug, name, email and password are required."
             return
         result = create_colaborador_completo(
             Colaborador(
@@ -174,7 +174,7 @@ class AdminState(AuthState):
         if not result["ok"]:
             self.message = f"❌ {result['error']}"
             return
-        self.message = f"✅ Colaborador {self.col_name} creado con acceso al portal."
+        self.message = f"✅ Contributor {self.col_name} created with portal access."
         self.col_slug = self.col_email = self.col_password = self.col_name = ""
         self.col_initials = self.col_role = self.col_bio = self.col_skills = ""
         self.col_languages = self.col_linkedin = self.col_github = ""
@@ -185,12 +185,12 @@ class AdminState(AuthState):
 
     def confirm_delete_colaborador(self, slug: str):
         delete_colaborador(slug)
-        self.message = "🗑️ Colaborador eliminado."
+        self.message = "🗑️ Contributor deleted."
         self.load_data()
 
 
 # ============================================
-# COMPONENTES UI
+# UI COMPONENTS
 # ============================================
 
 def post_preview_modal() -> rx.Component:
@@ -200,7 +200,7 @@ def post_preview_modal() -> rx.Component:
             rx.box(
                 rx.vstack(
                     rx.hstack(
-                        page_section_title("VISTA PREVIA", AdminState.preview_post.title),
+                        page_section_title("PREVIEW", AdminState.preview_post.title),
                         rx.button(
                             "✕", on_click=AdminState.close_preview,
                             background="transparent", color=C["muted"],
@@ -219,8 +219,8 @@ def post_preview_modal() -> rx.Component:
                     markdown_content(AdminState.preview_post.content),
                     accent_divider(),
                     rx.hstack(
-                        btn_primary("✅ Aprobar y publicar", on_click=AdminState.approve_post(AdminState.preview_post.slug)),
-                        btn_danger("❌ Rechazar", on_click=AdminState.reject_post(AdminState.preview_post.slug)),
+                        btn_primary("✅ Approve and publish", on_click=AdminState.approve_post(AdminState.preview_post.slug)),
+                        btn_danger("❌ Reject", on_click=AdminState.reject_post(AdminState.preview_post.slug)),
                         spacing="3",
                     ),
                     align_items="start", width="100%", spacing="4",
@@ -242,7 +242,7 @@ def post_preview_modal() -> rx.Component:
 def pending_list() -> rx.Component:
     return panel(
         rx.vstack(
-            section_header("PENDIENTES DE APROBACIÓN"),
+            section_header("PENDING APPROVAL"),
             rx.foreach(
                 AdminState.pending_posts,
                 lambda post: rx.hstack(
@@ -252,8 +252,8 @@ def pending_list() -> rx.Component:
                         align_items="start", spacing="0",
                     ),
                     rx.hstack(
-                        btn_primary("Ver post", on_click=AdminState.preview(post.slug)),
-                        btn_danger("Rechazar",  on_click=AdminState.reject_post(post.slug)),
+                        btn_primary("View post", on_click=AdminState.preview(post.slug)),
+                        btn_danger("Reject",     on_click=AdminState.reject_post(post.slug)),
                         spacing="2",
                     ),
                     justify="between", align="center", width="100%",
@@ -269,7 +269,7 @@ def pending_list() -> rx.Component:
 def posts_list() -> rx.Component:
     return panel(
         rx.vstack(
-            section_header("TODAS LAS ENTRADAS"),
+            section_header("ALL POSTS"),
             rx.foreach(
                 AdminState.posts,
                 lambda post: rx.hstack(
@@ -286,13 +286,13 @@ def posts_list() -> rx.Component:
                         align_items="start", spacing="0",
                     ),
                     rx.alert_dialog.root(
-                        rx.alert_dialog.trigger(btn_danger("Eliminar")),
+                        rx.alert_dialog.trigger(btn_danger("Delete")),
                         rx.alert_dialog.content(
-                            rx.alert_dialog.title("¿Eliminar este post?"),
-                            rx.alert_dialog.description("Esta acción no se puede deshacer."),
+                            rx.alert_dialog.title("Delete this post?"),
+                            rx.alert_dialog.description("This action cannot be undone."),
                             rx.hstack(
-                                rx.alert_dialog.cancel(rx.button("Cancelar", background="transparent", color=C["muted"], border=f"1px solid {C['border']}", cursor="pointer")),
-                                rx.alert_dialog.action(btn_danger("Sí, eliminar", on_click=AdminState.confirm_delete_post(post.slug))),
+                                rx.alert_dialog.cancel(rx.button("Cancel", background="transparent", color=C["muted"], border=f"1px solid {C['border']}", cursor="pointer")),
+                                rx.alert_dialog.action(btn_danger("Yes, delete", on_click=AdminState.confirm_delete_post(post.slug))),
                                 spacing="3", justify="end",
                             ),
                             background=C["surface"], color=C["text"], border=f"1px solid {C['border']}",
@@ -311,34 +311,34 @@ def posts_list() -> rx.Component:
 def colaborador_form() -> rx.Component:
     return panel(
         rx.vstack(
-            # Datos de acceso
-            section_header("ACCESO AL PORTAL"),
+            # Portal access
+            section_header("PORTAL ACCESS"),
             rx.grid(
-                form_field("Email",      rx.input(value=AdminState.col_email,    on_change=AdminState.set_col_email,    placeholder="email@correo.com",  type="email",    **input_style)),
-                form_field("Contraseña", rx.input(value=AdminState.col_password, on_change=AdminState.set_col_password, placeholder="Contraseña inicial", type="password", **input_style)),
+                form_field("Email",    rx.input(value=AdminState.col_email,    on_change=AdminState.set_col_email,    placeholder="email@address.com",  type="email",    **input_style)),
+                form_field("Password", rx.input(value=AdminState.col_password, on_change=AdminState.set_col_password, placeholder="Initial password",    type="password", **input_style)),
                 columns="2", spacing="4", width="100%",
             ),
             accent_divider(),
-            # Datos del perfil
-            section_header("PERFIL PÚBLICO"),
+            # Profile data
+            section_header("PUBLIC PROFILE"),
             rx.grid(
-                form_field("Nombre completo", rx.input(value=AdminState.col_name,     on_change=AdminState.set_col_name,     placeholder="Diego Herrera Castañeda",        **input_style)),
-                form_field("Slug (URL)",      rx.input(value=AdminState.col_slug,     on_change=AdminState.set_col_slug,     placeholder="diego-herrera",                  **input_style)),
-                form_field("Iniciales",       rx.input(value=AdminState.col_initials, on_change=AdminState.set_col_initials, placeholder="DH",                             **input_style)),
-                form_field("Título / Rol",    rx.input(value=AdminState.col_role,     on_change=AdminState.set_col_role,     placeholder="Economista · Analista de Datos", **input_style)),
-                form_field("Skills",          rx.input(value=AdminState.col_skills,   on_change=AdminState.set_col_skills,   placeholder="Python,SQL,Power BI",            **input_style)),
-                form_field("Idiomas",         rx.input(value=AdminState.col_languages,on_change=AdminState.set_col_languages,placeholder="Español (Nativo),Inglés (C1)",   **input_style)),
-                form_field("Orden",           rx.input(value=AdminState.col_order,    on_change=AdminState.set_col_order,    placeholder="0",                              **input_style)),
-                form_field("Email público",   rx.input(value=AdminState.col_email_pub,on_change=AdminState.set_col_email_pub,placeholder="contacto@correo.com",            **input_style)),
+                form_field("Full name",   rx.input(value=AdminState.col_name,     on_change=AdminState.set_col_name,     placeholder="Diego Herrera Castañeda",        **input_style)),
+                form_field("Slug (URL)",  rx.input(value=AdminState.col_slug,     on_change=AdminState.set_col_slug,     placeholder="diego-herrera",                  **input_style)),
+                form_field("Initials",    rx.input(value=AdminState.col_initials, on_change=AdminState.set_col_initials, placeholder="DH",                             **input_style)),
+                form_field("Title / Role", rx.input(value=AdminState.col_role,    on_change=AdminState.set_col_role,     placeholder="Economist · Data Analyst",       **input_style)),
+                form_field("Skills",      rx.input(value=AdminState.col_skills,   on_change=AdminState.set_col_skills,   placeholder="Python,SQL,Power BI",            **input_style)),
+                form_field("Languages",   rx.input(value=AdminState.col_languages,on_change=AdminState.set_col_languages,placeholder="Spanish (Native),English (C1)",  **input_style)),
+                form_field("Order",       rx.input(value=AdminState.col_order,    on_change=AdminState.set_col_order,    placeholder="0",                              **input_style)),
+                form_field("Public email", rx.input(value=AdminState.col_email_pub,on_change=AdminState.set_col_email_pub,placeholder="contact@address.com",           **input_style)),
                 columns="2", spacing="4", width="100%",
             ),
-            form_field("Bio / Resumen profesional",
+            form_field("Bio / Professional summary",
                 rx.text_area(value=AdminState.col_bio, on_change=AdminState.set_col_bio,
-                             placeholder="Resumen profesional...", **textarea_style),
+                             placeholder="Professional summary...", **textarea_style),
             ),
             accent_divider(),
-            # Redes sociales
-            section_header("REDES SOCIALES (opcionales)"),
+            # Social media
+            section_header("SOCIAL MEDIA (optional)"),
             rx.grid(
                 form_field("LinkedIn",  rx.input(value=AdminState.col_linkedin,  on_change=AdminState.set_col_linkedin,  placeholder="https://linkedin.com/in/...", **input_style)),
                 form_field("GitHub",    rx.input(value=AdminState.col_github,    on_change=AdminState.set_col_github,    placeholder="https://github.com/...",     **input_style)),
@@ -347,7 +347,7 @@ def colaborador_form() -> rx.Component:
                 form_field("YouTube",   rx.input(value=AdminState.col_youtube,   on_change=AdminState.set_col_youtube,   placeholder="https://youtube.com/...",    **input_style)),
                 columns="2", spacing="4", width="100%",
             ),
-            btn_primary("Crear colaborador", on_click=AdminState.create_new_colaborador),
+            btn_primary("Create contributor", on_click=AdminState.create_new_colaborador),
             align_items="start", width="100%", spacing="4",
         ),
     )
@@ -360,7 +360,7 @@ def edit_modal() -> rx.Component:
             rx.box(
                 rx.vstack(
                     rx.hstack(
-                        page_section_title("EDITAR", AdminState.col_name),
+                        page_section_title("EDIT", AdminState.col_name),
                         rx.button(
                             "✕", on_click=AdminState.close_edit,
                             background="transparent", color=C["muted"],
@@ -371,18 +371,18 @@ def edit_modal() -> rx.Component:
                     ),
                     accent_divider(),
                     rx.grid(
-                        form_field("Nombre completo", rx.input(value=AdminState.col_name,      on_change=AdminState.set_col_name,      **input_style)),
-                        form_field("Iniciales",       rx.input(value=AdminState.col_initials,  on_change=AdminState.set_col_initials,  **input_style)),
-                        form_field("Título / Rol",    rx.input(value=AdminState.col_role,      on_change=AdminState.set_col_role,      **input_style)),
-                        form_field("Skills",          rx.input(value=AdminState.col_skills,    on_change=AdminState.set_col_skills,    **input_style)),
-                        form_field("Idiomas",         rx.input(value=AdminState.col_languages, on_change=AdminState.set_col_languages, **input_style)),
-                        form_field("Orden",           rx.input(value=AdminState.col_order,     on_change=AdminState.set_col_order,     **input_style)),
-                        form_field("Email público",   rx.input(value=AdminState.col_email_pub, on_change=AdminState.set_col_email_pub, **input_style)),
-                        form_field("LinkedIn",        rx.input(value=AdminState.col_linkedin,  on_change=AdminState.set_col_linkedin,  **input_style)),
-                        form_field("GitHub",          rx.input(value=AdminState.col_github,    on_change=AdminState.set_col_github,    **input_style)),
-                        form_field("X/Twitter",       rx.input(value=AdminState.col_twitter,   on_change=AdminState.set_col_twitter,   **input_style)),
-                        form_field("Instagram",       rx.input(value=AdminState.col_instagram, on_change=AdminState.set_col_instagram, **input_style)),
-                        form_field("YouTube",         rx.input(value=AdminState.col_youtube,   on_change=AdminState.set_col_youtube,   **input_style)),
+                        form_field("Full name",    rx.input(value=AdminState.col_name,      on_change=AdminState.set_col_name,      **input_style)),
+                        form_field("Initials",     rx.input(value=AdminState.col_initials,  on_change=AdminState.set_col_initials,  **input_style)),
+                        form_field("Title / Role", rx.input(value=AdminState.col_role,      on_change=AdminState.set_col_role,      **input_style)),
+                        form_field("Skills",       rx.input(value=AdminState.col_skills,    on_change=AdminState.set_col_skills,    **input_style)),
+                        form_field("Languages",    rx.input(value=AdminState.col_languages, on_change=AdminState.set_col_languages, **input_style)),
+                        form_field("Order",        rx.input(value=AdminState.col_order,     on_change=AdminState.set_col_order,     **input_style)),
+                        form_field("Public email", rx.input(value=AdminState.col_email_pub, on_change=AdminState.set_col_email_pub, **input_style)),
+                        form_field("LinkedIn",     rx.input(value=AdminState.col_linkedin,  on_change=AdminState.set_col_linkedin,  **input_style)),
+                        form_field("GitHub",       rx.input(value=AdminState.col_github,    on_change=AdminState.set_col_github,    **input_style)),
+                        form_field("X/Twitter",    rx.input(value=AdminState.col_twitter,   on_change=AdminState.set_col_twitter,   **input_style)),
+                        form_field("Instagram",    rx.input(value=AdminState.col_instagram, on_change=AdminState.set_col_instagram, **input_style)),
+                        form_field("YouTube",      rx.input(value=AdminState.col_youtube,   on_change=AdminState.set_col_youtube,   **input_style)),
                         columns="2", spacing="4", width="100%",
                     ),
                     form_field("Bio",
@@ -390,8 +390,8 @@ def edit_modal() -> rx.Component:
                                      min_height="120px", **input_style),
                     ),
                     rx.hstack(
-                        btn_primary("Guardar cambios", on_click=AdminState.save_edit),
-                        rx.button("Cancelar", on_click=AdminState.close_edit,
+                        btn_primary("Save changes", on_click=AdminState.save_edit),
+                        rx.button("Cancel", on_click=AdminState.close_edit,
                                   background="transparent", color=C["muted"],
                                   border=f"1px solid {C['border']}", cursor="pointer",
                                   border_radius="4px", padding="0.65em 1.75em"),
@@ -416,7 +416,7 @@ def edit_modal() -> rx.Component:
 def colaboradores_list() -> rx.Component:
     return panel(
         rx.vstack(
-            section_header("COLABORADORES REGISTRADOS"),
+            section_header("REGISTERED CONTRIBUTORS"),
             rx.foreach(
                 AdminState.colaboradores,
                 lambda c: rx.hstack(
@@ -431,15 +431,15 @@ def colaboradores_list() -> rx.Component:
                         align_items="start", spacing="0",
                     ),
                     rx.hstack(
-                        btn_primary("Editar", on_click=AdminState.open_edit(c.slug)),
+                        btn_primary("Edit", on_click=AdminState.open_edit(c.slug)),
                         rx.alert_dialog.root(
-                            rx.alert_dialog.trigger(btn_danger("Eliminar")),
+                            rx.alert_dialog.trigger(btn_danger("Delete")),
                             rx.alert_dialog.content(
-                                rx.alert_dialog.title("¿Eliminar este colaborador?"),
-                                rx.alert_dialog.description("Esta acción elimina el perfil y el acceso al portal."),
+                                rx.alert_dialog.title("Delete this contributor?"),
+                                rx.alert_dialog.description("This action removes the profile and portal access."),
                                 rx.hstack(
-                                    rx.alert_dialog.cancel(rx.button("Cancelar", background="transparent", color=C["muted"], border=f"1px solid {C['border']}", cursor="pointer")),
-                                    rx.alert_dialog.action(btn_danger("Sí, eliminar", on_click=AdminState.confirm_delete_colaborador(c.slug))),
+                                    rx.alert_dialog.cancel(rx.button("Cancel", background="transparent", color=C["muted"], border=f"1px solid {C['border']}", cursor="pointer")),
+                                    rx.alert_dialog.action(btn_danger("Yes, delete", on_click=AdminState.confirm_delete_colaborador(c.slug))),
                                     spacing="3", justify="end",
                                 ),
                                 background=C["surface"], color=C["text"], border=f"1px solid {C['border']}",
@@ -459,16 +459,16 @@ def colaboradores_list() -> rx.Component:
 
 def admin_page() -> rx.Component:
     return page_wrapper(
-        portal_navbar("PANEL ADMIN", AdminState.logout),
+        portal_navbar("ADMIN PANEL", AdminState.logout),
         post_preview_modal(),
         edit_modal(),
         admin_content_wrapper(
-            page_section_title("POSTS", "Gestión de entradas"),
+            page_section_title("POSTS", "Manage posts"),
             feedback_message(AdminState.message),
             pending_list(),
             posts_list(),
             accent_divider(),
-            page_section_title("COLABORADORES", "Gestionar colaboradores"),
+            page_section_title("CONTRIBUTORS", "Manage contributors"),
             colaborador_form(),
             colaboradores_list(),
         ),

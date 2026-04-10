@@ -15,12 +15,12 @@ def page_404() -> rx.Component:
                 rx.vstack(
                     rx.text("404", font_size="6rem", font_weight="700", color=C["accent"],
                             font_family=fonts["serif"], line_height="1", opacity="0.4"),
-                    rx.text("PÁGINA NO ENCONTRADA", font_size="0.7em", color=C["accent"],
+                    rx.text("PAGE NOT FOUND", font_size="0.7em", color=C["accent"],
                             letter_spacing="0.35em", font_weight="600"),
                     rx.box(width="40px", height="2px", background=C["accent"],
                            border_radius="2px", margin_y="1.5em"),
                     rx.text(
-                        "La página que buscás no existe o fue movida.",
+                        "The page you're looking for doesn't exist or has been moved.",
                         color=C["muted"], font_size="1em", line_height="1.8",
                         text_align="center",
                     ),

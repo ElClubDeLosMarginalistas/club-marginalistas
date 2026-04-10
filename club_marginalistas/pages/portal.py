@@ -36,7 +36,7 @@ class PortalState(AuthState):
 
     def submit_post(self):
         if not self.title or not self.post_slug or not self.content:
-            self.message = "❌ Título, slug y contenido son obligatorios."
+            self.message = "❌ Title, slug and content are required."
             return
         create_post(Post(
             slug=self.post_slug, title=self.title,
@@ -46,7 +46,7 @@ class PortalState(AuthState):
             content=self.content,
             status="pending",
         ))
-        self.message = "✅ Post enviado. Quedará publicado una vez que el admin lo apruebe."
+        self.message = "✅ Post submitted. It will be published once the admin approves it."
         self.title = self.description = ""
         self.date = self.post_slug = self.content = ""
         self.category = "General"
@@ -57,18 +57,18 @@ def submit_form() -> rx.Component:
     return panel(
         rx.vstack(
             rx.grid(
-                form_field("Título",      rx.input(value=PortalState.title,       on_change=PortalState.set_title,       placeholder="Título del post",    **input_style)),
-                form_field("Slug (URL)",  rx.input(value=PortalState.post_slug,   on_change=PortalState.set_post_slug,   placeholder="2025-03-01-mi-post", **input_style)),
-                form_field("Fecha",       rx.input(value=PortalState.date,        on_change=PortalState.set_date,        placeholder="2025-03-09",         **input_style)),
-                form_field("Categoría",   rx.select(CATEGORIES_FORM, value=PortalState.category, on_change=PortalState.set_category, **select_style)),
-                form_field("Descripción", rx.input(value=PortalState.description, on_change=PortalState.set_description, placeholder="Breve descripción",  **input_style)),
+                form_field("Title",            rx.input(value=PortalState.title,       on_change=PortalState.set_title,       placeholder="Post title",         **input_style)),
+                form_field("Slug (URL)",       rx.input(value=PortalState.post_slug,   on_change=PortalState.set_post_slug,   placeholder="2025-03-01-my-post", **input_style)),
+                form_field("Date",             rx.input(value=PortalState.date,        on_change=PortalState.set_date,        placeholder="2025-03-09",         **input_style)),
+                form_field("Category",         rx.select(CATEGORIES_FORM, value=PortalState.category, on_change=PortalState.set_category, **select_style)),
+                form_field("Description",      rx.input(value=PortalState.description, on_change=PortalState.set_description, placeholder="Brief description",  **input_style)),
                 columns="2", spacing="4", width="100%",
             ),
-            form_field("Contenido (Markdown)",
+            form_field("Content (Markdown)",
                 rx.text_area(value=PortalState.content, on_change=PortalState.set_content,
-                             placeholder="Escribe el contenido en Markdown...", **textarea_style),
+                             placeholder="Write content in Markdown...", **textarea_style),
             ),
-            btn_primary("Enviar para revisión", on_click=PortalState.submit_post),
+            btn_primary("Submit for review", on_click=PortalState.submit_post),
             align_items="start", width="100%", spacing="4",
         ),
     )
@@ -77,7 +77,7 @@ def submit_form() -> rx.Component:
 def my_posts() -> rx.Component:
     return panel(
         rx.vstack(
-            section_header("MIS ENTRADAS"),
+            section_header("MY POSTS"),
             rx.foreach(
                 PortalState.posts,
                 lambda post: rx.hstack(
@@ -99,9 +99,9 @@ def my_posts() -> rx.Component:
 
 def portal_page() -> rx.Component:
     return page_wrapper(
-        portal_navbar("PORTAL COLABORADOR", PortalState.logout),
+        portal_navbar("CONTRIBUTOR PORTAL", PortalState.logout),
         admin_content_wrapper(
-            page_section_title("NUEVA ENTRADA", "Redactar post"),
+            page_section_title("NEW POST", "Write post"),
             feedback_message(PortalState.message),
             submit_form(),
             my_posts(),

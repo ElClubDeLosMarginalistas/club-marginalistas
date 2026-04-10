@@ -39,7 +39,7 @@ def post_found() -> rx.Component:
 
 def post_not_found() -> rx.Component:
     return rx.vstack(
-        rx.heading("Post no encontrado", size="7", color=C["text"], font_family=fonts["serif"]),
+        rx.heading("Post not found", size="7", color=C["text"], font_family=fonts["serif"]),
         back_link(),
         align_items="start", spacing="4",
     )

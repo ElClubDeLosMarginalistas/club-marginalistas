@@ -12,7 +12,7 @@ from club_marginalistas.styles import (
 
 
 # ============================================
-# ESTADOS
+# STATES
 # ============================================
 
 class ColaboradoresState(rx.State):
@@ -41,7 +41,7 @@ class ColaboradorState(rx.State):
 
 
 # ============================================
-# COMPONENTES
+# COMPONENTS
 # ============================================
 
 def social_link(label: str, url, icon: str) -> rx.Component:
@@ -94,7 +94,7 @@ def colaborador_card(c: Colaborador) -> rx.Component:
                 ),
                 rx.text(c.bio, color=C["dim2"], font_size="0.82em",
                         line_height="1.65", margin_top="1em"),
-                rx.text("Ver perfil →", font_size="0.78em", color=C["accent"],
+                rx.text("View profile →", font_size="0.78em", color=C["accent"],
                         font_weight="500", letter_spacing="0.05em", margin_top="1.25em"),
                 padding="1.4em",
             ),
@@ -124,7 +124,7 @@ def post_row(post: Post) -> rx.Component:
                 ),
                 align_items="start", spacing="1",
             ),
-            rx.text("Leer →", font_size="0.78em", color=C["accent"], font_weight="500"),
+            rx.text("Read →", font_size="0.78em", color=C["accent"], font_weight="500"),
             justify="between", align="center", width="100%",
             padding="0.85em 0", border_bottom=f"1px solid {C['border']}",
         ),
@@ -163,12 +163,12 @@ def perfil_completo() -> rx.Component:
 
         accent_divider(),
 
-        # Skills e idiomas
+        # Skills and languages
         rx.grid(
             rx.cond(
                 c.skills != "",
                 rx.vstack(
-                    section_header("HABILIDADES TÉCNICAS"),
+                    section_header("TECHNICAL SKILLS"),
                     rx.hstack(
                         rx.foreach(
                             c.skills.split(","),
@@ -182,7 +182,7 @@ def perfil_completo() -> rx.Component:
             rx.cond(
                 c.languages != "",
                 rx.vstack(
-                    section_header("IDIOMAS"),
+                    section_header("LANGUAGES"),
                     rx.text(c.languages, font_size="0.85em", color=C["muted"]),
                     align_items="start", spacing="3",
                 ),
@@ -192,9 +192,9 @@ def perfil_completo() -> rx.Component:
 
         accent_divider(),
 
-        # Redes sociales
+        # Social media
         rx.vstack(
-            section_header("CONTACTO Y REDES"),
+            section_header("CONTACT & NETWORKS"),
             rx.hstack(
                 social_link("LinkedIn",  c.linkedin,  "in"),
                 social_link("GitHub",    c.github,    "gh"),
@@ -221,15 +221,15 @@ def perfil_completo() -> rx.Component:
 
         accent_divider(),
 
-        # Posts publicados
-        section_header("ENTRADAS PUBLICADAS"),
+        # Published posts
+        section_header("PUBLISHED POSTS"),
         rx.cond(
             ColaboradorState.posts.length() > 0,
             rx.vstack(
                 rx.foreach(ColaboradorState.posts, post_row),
                 width="100%", spacing="0",
             ),
-            empty_state("Este colaborador aún no tiene entradas publicadas."),
+            empty_state("This contributor has no published posts yet."),
         ),
 
         align_items="start", width="100%", spacing="5",
@@ -237,18 +237,18 @@ def perfil_completo() -> rx.Component:
 
 
 # ============================================
-# PÁGINAS
+# PAGES
 # ============================================
 
 def colaboradores_page() -> rx.Component:
     return page_wrapper(
         navbar(),
-        page_hero("EL EQUIPO", "Colaboradores"),
+        page_hero("THE TEAM", "Contributors"),
         page_content(
             rx.vstack(
                 rx.text(
-                    "Las personas detrás del análisis. Economistas, analistas e investigadores "
-                    "comprometidos con el pensamiento económico riguroso e independiente.",
+                    "The people behind the analysis. Economists, analysts and researchers "
+                    "committed to rigorous and independent economic thought.",
                     line_height="1.8", max_width="600px",
                 ),
                 rx.box(height="2em"),
@@ -259,9 +259,9 @@ def colaboradores_page() -> rx.Component:
                 rx.box(height="2em"),
                 panel(
                     rx.vstack(
-                        section_header("¿QUERÉS COLABORAR?"),
+                        section_header("WANT TO CONTRIBUTE?"),
                         rx.text(
-                            "Si sos economista, analista o investigador y querés publicar en el Club, escribinos.",
+                            "If you are an economist, analyst or researcher and want to publish in the Club, write to us.",
                             font_size="0.88em", line_height="1.6",
                         ),
                         rx.link("elclubdelosmarginalistas@gmail.com",
@@ -288,14 +288,14 @@ def colaborador_page() -> rx.Component:
         navbar(),
         rx.box(
             rx.vstack(
-                back_link("← Ver colaboradores", "/colaboradores"),
+                back_link("← View contributors", "/colaboradores"),
                 accent_divider(),
                 rx.cond(
                     ColaboradorState.found,
                     perfil_completo(),
                     rx.vstack(
-                        rx.heading("Colaborador no encontrado", size="6", color=C["text"]),
-                        back_link("← Ver colaboradores", "/colaboradores"),
+                        rx.heading("Contributor not found", size="6", color=C["text"]),
+                        back_link("← View contributors", "/colaboradores"),
                         align_items="start", spacing="4",
                     ),
                 ),

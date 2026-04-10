@@ -11,7 +11,7 @@ from club_marginalistas.styles import (
 
 class IndexState(rx.State):
     posts: list[Post] = []
-    active_filter: str = "Todas"
+    active_filter: str = "All"
 
     def load_posts(self):
         self.posts = get_all_posts()
@@ -21,7 +21,7 @@ class IndexState(rx.State):
 
     @rx.var
     def filtered_posts(self) -> list[Post]:
-        if self.active_filter == "Todas":
+        if self.active_filter == "All":
             return self.posts
         return [p for p in self.posts if p.category.lower() == self.active_filter.lower()]
 

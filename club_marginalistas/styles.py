@@ -1,10 +1,10 @@
 import reflex as rx
 
 # ============================================
-# ESTILOS GLOBALES — El Club de los Marginalistas
+# GLOBAL STYLES — El Club de los Marginalistas
 # ============================================
 
-# --- PALETA ---
+# --- PALETTE ---
 C = {
     "bg":          "#0a0a0d",
     "surface":     "#0f1219",
@@ -22,23 +22,23 @@ C = {
     "danger_dim":  "#6b3a3a",
 }
 
-# mantener alias `colors` para compatibilidad con post.py / otros módulos
+# keep alias `colors` for compatibility with post.py / other modules
 colors = C
 
-# --- TIPOGRAFÍA ---
+# --- TYPOGRAPHY ---
 fonts = {
     "serif": "Georgia, serif",
     "sans":  "system-ui, sans-serif",
 }
 
-# --- GRADIENTES ---
+# --- GRADIENTS ---
 G = {
     "accent_h": f"linear-gradient(90deg, {C['accent']}, transparent)",
     "center_h": f"linear-gradient(90deg, transparent, {C['accent']}, transparent)",
     "border_h": f"linear-gradient(90deg, transparent, {C['border']}, transparent)",
 }
 
-# --- ESPACIADO ---
+# --- SPACING ---
 S = {
     "page_x":    "2em",
     "page_max":  "1200px",
@@ -46,12 +46,12 @@ S = {
     "admin_max": "960px",
 }
 
-# --- CATEGORÍAS ---
-CATEGORIES_FILTER = ["Todas", "Trading", "Economía"]
-CATEGORIES_FORM   = ["General", "Teoría", "Macro", "Micro"]
+# --- CATEGORIES ---
+CATEGORIES_FILTER = ["All", "Trading", "Economics"]
+CATEGORIES_FORM   = ["General", "Theory", "Macro", "Micro"]
 
 # ============================================
-# ESTILOS BASE (dict reutilizables)
+# BASE STYLES (reusable dicts)
 # ============================================
 
 _input_base = {
@@ -103,7 +103,7 @@ navbar_box_style = {
 }
 
 # ============================================
-# ÁTOMOS
+# ATOMS
 # ============================================
 
 def page_wrapper(*children, **props) -> rx.Component:
@@ -153,7 +153,7 @@ def page_section_title(label: str, title: str) -> rx.Component:
     )
 
 
-def back_link(text: str = "← Volver al blog", href: str = "/") -> rx.Component:
+def back_link(text: str = "← Back to blog", href: str = "/") -> rx.Component:
     return rx.link(
         text, href=href,
         color=C["accent"], font_size="0.8em", letter_spacing="0.05em",
@@ -193,7 +193,7 @@ def feedback_message(message) -> rx.Component:
 
 
 # ============================================
-# BOTONES
+# BUTTONS
 # ============================================
 
 def btn_primary(text: str, **props) -> rx.Component:
@@ -210,7 +210,6 @@ def btn_primary(text: str, **props) -> rx.Component:
 
 
 def btn_outline(text: str, **props) -> rx.Component:
-    # Cambiado a rx.button para accesibilidad y soporte correcto de on_click
     return rx.button(
         text,
         background="transparent",
@@ -241,7 +240,7 @@ def btn_danger(text: str, **props) -> rx.Component:
 
 
 # ============================================
-# NAVEGACIÓN
+# NAVIGATION
 # ============================================
 
 def logo() -> rx.Component:
@@ -272,9 +271,9 @@ def nav_link(text: str, href: str) -> rx.Component:
 def lang_toggle() -> rx.Component:
     return rx.box(
         rx.hstack(
-            rx.text("ES", font_size="0.75em", color=C["silver"], font_weight="600", letter_spacing="0.05em"),
+            rx.text("EN", font_size="0.75em", color=C["silver"], font_weight="600", letter_spacing="0.05em"),
             rx.box(width="1px", height="12px", background=C["accent"]),
-            rx.text("EN", font_size="0.75em", color=C["muted"], font_weight="400", letter_spacing="0.05em"),
+            rx.text("ES", font_size="0.75em", color=C["muted"], font_weight="400", letter_spacing="0.05em"),
             spacing="2", align="center",
         ),
         border=f"1px solid {C['border']}", border_radius="4px",
@@ -284,7 +283,7 @@ def lang_toggle() -> rx.Component:
 
 
 def _navbar_inner(right_content) -> rx.Component:
-    """Base compartida entre variantes de navbar."""
+    """Shared base between navbar variants."""
     return rx.hstack(
         logo(),
         right_content,
@@ -298,9 +297,9 @@ def navbar() -> rx.Component:
     return rx.box(
         _navbar_inner(
             rx.hstack(
-                nav_link("Inicio", "/"),
-                nav_link("Acerca", "/acerca"),
-                nav_link("Colaboradores", "/colaboradores"),
+                nav_link("Home", "/"),
+                nav_link("About", "/acerca"),
+                nav_link("Contributors", "/colaboradores"),
                 lang_toggle(),
                 spacing="6", align="center",
             )
@@ -310,11 +309,11 @@ def navbar() -> rx.Component:
 
 
 # ============================================
-# CONTENIDO
+# CONTENT
 # ============================================
 
 def _social_icon_link(href: str, icon_name: str) -> rx.Component:
-    """Ícono de red social con rx.icon (Lucide)."""
+    """Social network icon with rx.icon (Lucide)."""
     return rx.link(
         rx.icon(icon_name, size=18, color=C["dim2"]),
         href=href,
@@ -324,7 +323,7 @@ def _social_icon_link(href: str, icon_name: str) -> rx.Component:
 
 
 def _tiktok_icon_link(href: str) -> rx.Component:
-    """Ícono TikTok vía SVG inline."""
+    """TikTok icon via inline SVG."""
     return rx.link(
         rx.html(
             '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor" style="display:block">'
@@ -340,7 +339,7 @@ def _tiktok_icon_link(href: str) -> rx.Component:
 
 
 def _telegram_icon_link(href: str) -> rx.Component:
-    """Ícono Telegram vía SVG inline."""
+    """Telegram icon via inline SVG."""
     return rx.link(
         rx.html(
             '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor" style="display:block">'
@@ -356,13 +355,13 @@ def _telegram_icon_link(href: str) -> rx.Component:
 
 
 def footer() -> rx.Component:
-    nav_items = [("Inicio", "/"), ("Acerca", "/acerca"), ("Colaboradores", "/colaboradores")]
+    nav_items = [("Home", "/"), ("About", "/acerca"), ("Contributors", "/colaboradores")]
     return rx.box(
         rx.vstack(
             rx.hstack(
                 rx.vstack(
                     rx.text("El Club de los Marginalistas", font_size="0.85em", color=C["silver"], font_weight="600", font_family=fonts["serif"]),
-                    rx.text("Pensamiento económico independiente.", font_size="0.75em", color=C["dim"]),
+                    rx.text("Independent economic thought.", font_size="0.75em", color=C["dim"]),
                     rx.text("elclubdelosmarginalistas.com", font_size="0.75em", color=C["accent"]),
                     align_items="start", spacing="1",
                 ),
@@ -398,19 +397,19 @@ def newsletter(email_var, set_email_fn, on_subscribe_fn, message_var) -> rx.Comp
                 rx.hstack(
                     rx.vstack(
                         section_header("NEWSLETTER"),
-                        rx.heading("Análisis directo a tu correo", size="5", color=C["text"], font_family=fonts["serif"]),
-                        rx.text("Sin ruido. Solo economía.", color=C["dim2"], font_size="0.875em"),
+                        rx.heading("Analysis straight to your inbox", size="5", color=C["text"], font_family=fonts["serif"]),
+                        rx.text("No noise. Just economics.", color=C["dim2"], font_size="0.875em"),
                         align_items="start", spacing="2",
                     ),
                     rx.hstack(
                         rx.input(
                             value=email_var,
                             on_change=set_email_fn,
-                            placeholder="tu@correo.com",
+                            placeholder="your@email.com",
                             type="email",
                             **{**_input_base, "width": "260px"},
                         ),
-                        btn_primary("Suscribirse", on_click=on_subscribe_fn),
+                        btn_primary("Subscribe", on_click=on_subscribe_fn),
                         spacing="3",
                     ),
                     justify="between", align="center", width="100%",
@@ -437,7 +436,7 @@ def hero() -> rx.Component:
                 rx.hstack(
                     rx.box(width="2px", height="40px", background=C["accent"]),
                     rx.vstack(
-                        rx.text("ANÁLISIS · TEORÍA · MERCADOS", font_size="0.7em", color=C["accent"], letter_spacing="0.2em", font_weight="500"),
+                        rx.text("ANALYSIS · THEORY · MARKETS", font_size="0.7em", color=C["accent"], letter_spacing="0.2em", font_weight="500"),
                         rx.heading(
                             "El Club de los Marginalistas",
                             font_size="clamp(1.8rem, 4vw, 3rem)", font_weight="700",
@@ -449,10 +448,10 @@ def hero() -> rx.Component:
                     spacing="4", align="center",
                 ),
                 rx.text(
-                    "Pensamiento económico riguroso. Análisis de mercados, teoría y política económica desde una perspectiva académica e independiente.",
+                    "Rigorous economic thought. Market analysis, theory, and economic policy from an academic and independent perspective.",
                     color=C["muted"], font_size="1em", line_height="1.8", max_width="580px",
                 ),
-                btn_outline("Explorar entradas →"),
+                btn_outline("Explore posts →"),
                 align_items="start", spacing="5",
             ),
             rx.box(height="1px", background=G["border_h"], margin_top="3em"),
@@ -476,7 +475,7 @@ def post_card(post) -> rx.Component:
                 rx.text(post.description, color=C["dim2"], font_size="0.85em", line_height="1.7", margin_bottom="1.5em"),
                 rx.hstack(
                     rx.hstack(author_avatar(), rx.text(post.author, font_size="0.78em", font_weight="500", color=C["muted"]), spacing="2", align="center"),
-                    rx.text("Leer →", font_size="0.78em", color=C["accent"], font_weight="500", letter_spacing="0.05em"),
+                    rx.text("Read →", font_size="0.78em", color=C["accent"], font_weight="500", letter_spacing="0.05em"),
                     justify="between", width="100%",
                 ),
                 padding="1.4em",
@@ -522,7 +521,7 @@ def markdown_content(content) -> rx.Component:
 
 
 # ============================================
-# WRAPPERS DE PÁGINA
+# PAGE WRAPPERS
 # ============================================
 
 def post_content_wrapper(*children) -> rx.Component:
@@ -540,7 +539,7 @@ def admin_content_wrapper(*children) -> rx.Component:
 
 
 # ============================================
-# COMPONENTES DE PÁGINAS ESPECÍFICAS
+# PAGE-SPECIFIC COMPONENTS
 # ============================================
 
 def info_card(label: str, description: str) -> rx.Component:
@@ -604,7 +603,7 @@ def filter_btn(active_filter, set_filter, cat: str) -> rx.Component:
 
 def filters_bar(active_filter, set_filter) -> rx.Component:
     return rx.hstack(
-        section_header("ENTRADAS RECIENTES"),
+        section_header("RECENT POSTS"),
         rx.hstack(
             rx.foreach(CATEGORIES_FILTER, lambda cat: filter_btn(active_filter, set_filter, cat)),
             spacing="2",
@@ -615,16 +614,16 @@ def filters_bar(active_filter, set_filter) -> rx.Component:
     )
 
 
-def empty_state(message: str = "No hay entradas en esta categoría.") -> rx.Component:
+def empty_state(message: str = "No posts in this category.") -> rx.Component:
     return rx.box(rx.text(message, color=C["accent"], font_size="0.9em"), padding="3em 0")
 
 
 # ============================================
-# NAVBARS PARA PORTALES (minimalistas)
+# PORTAL NAVBARS (minimal)
 # ============================================
 
 def login_navbar() -> rx.Component:
-    """Navbar minimalista para la página de login."""
+    """Minimal navbar for the login page."""
     return rx.box(
         rx.hstack(
             logo(),
@@ -636,14 +635,14 @@ def login_navbar() -> rx.Component:
     )
 
 def portal_navbar(label: str, on_logout) -> rx.Component:
-    """Navbar minimalista para admin y portal colaborador."""
+    """Minimal navbar for admin and contributor portal."""
     return rx.box(
         rx.hstack(
             logo(),
             rx.hstack(
                 rx.text(label, font_size="0.75em", color=C["accent"], letter_spacing="0.15em", font_weight="600"),
                 rx.button(
-                    "Cerrar sesión",
+                    "Log out",
                     on_click=on_logout,
                     background="transparent",
                     border=f"1px solid {C['border']}",
@@ -665,7 +664,7 @@ def portal_navbar(label: str, on_logout) -> rx.Component:
 
 
 def status_badge(status) -> rx.Component:
-    """Badge de status para posts en el portal."""
+    """Status badge for posts in the portal."""
     return rx.box(
         rx.text(status, font_size="0.65em", font_weight="600", letter_spacing="0.1em", text_transform="uppercase"),
         background=rx.cond(

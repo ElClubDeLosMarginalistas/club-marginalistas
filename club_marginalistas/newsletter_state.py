@@ -11,11 +11,11 @@ class NewsletterState(rx.State):
 
     def subscribe(self):
         if not self.email or "@" not in self.email:
-            self.message = "Ingresa un email válido."
+            self.message = "Please enter a valid email."
             return
         result = subscribe_newsletter(self.email)
         if result["ok"]:
-            self.message = "✅ ¡Suscripción exitosa!"
+            self.message = "✅ Subscription successful!"
             self.email = ""
         else:
-            self.message = "❌ Error al suscribirse. Intenta de nuevo."
+            self.message = "❌ Subscription error. Please try again."

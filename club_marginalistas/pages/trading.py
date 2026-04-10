@@ -9,23 +9,23 @@ from club_marginalistas.styles import (
 def trading_page() -> rx.Component:
     return page_wrapper(
         navbar(),
-        page_hero("MERCADOS & ANÁLISIS", "Trading"),
+        page_hero("MARKETS & ANALYSIS", "Trading"),
         page_content(
             rx.vstack(
                 accent_divider(),
                 rx.box(height="3em"),
                 panel(
                     rx.vstack(
-                        section_header("PRÓXIMAMENTE"),
+                        section_header("COMING SOON"),
                         rx.text(
-                            "Estamos construyendo una sección dedicada al análisis técnico y fundamental "
-                            "de mercados financieros. Ideas de trading, seguimiento de portafolios y "
-                            "análisis de activos con fundamento económico.",
+                            "We are building a section dedicated to technical and fundamental analysis "
+                            "of financial markets. Trading ideas, portfolio tracking and "
+                            "asset analysis with economic grounding.",
                             line_height="1.85", max_width="560px",
                         ),
                         rx.box(height="0.5em"),
                         rx.text(
-                            "Renta Variable · Divisas · Commodities · Tasas · Portafolios",
+                            "Equities · FX · Commodities · Rates · Portfolios",
                             font_size="0.8em",
                         ),
                         rx.box(height="1em"),

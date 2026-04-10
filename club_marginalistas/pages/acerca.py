@@ -10,63 +10,63 @@ from club_marginalistas.styles import (
 def acerca_page() -> rx.Component:
     return page_wrapper(
         navbar(),
-        page_hero("SOBRE NOSOTROS", "Acerca del Club"),
+        page_hero("ABOUT US", "About the Club"),
         page_content(
             rx.vstack(
                 # Intro
                 rx.vstack(
                     rx.text(
-                        "El Club de los Marginalistas es un espacio de análisis económico independiente. "
-                        "Publicamos ensayos, análisis de coyuntura y reflexiones teóricas sobre economía, "
-                        "mercados financieros y política económica desde una perspectiva rigurosa y académica.",
+                        "El Club de los Marginalistas is an independent economic analysis space. "
+                        "We publish essays, current affairs analysis and theoretical reflections on economics, "
+                        "financial markets and economic policy from a rigorous and academic perspective.",
                         line_height="1.85",
                     ),
                     rx.text(
-                        "El nombre rinde homenaje a los economistas marginalistas del siglo XIX — Jevons, Menger, Walras — "
-                        "quienes transformaron la disciplina al introducir el análisis marginal como herramienta central "
-                        "del pensamiento económico. Ese mismo espíritu de rigor, independencia intelectual y disposición "
-                        "a cuestionar el consenso guía cada publicación.",
+                        "The name pays homage to the marginalist economists of the 19th century — Jevons, Menger, Walras — "
+                        "who transformed the discipline by introducing marginal analysis as a central tool "
+                        "of economic thought. That same spirit of rigor, intellectual independence and willingness "
+                        "to question the consensus guides every publication.",
                         line_height="1.85",
                     ),
                     align_items="start", spacing="5", width="100%",
                 ),
 
-                # Qué hacemos
+                # What we do
                 rx.box(height="2.5em"),
-                section_header("QUÉ HACEMOS"),
+                section_header("WHAT WE DO"),
                 accent_divider(),
                 rx.box(height="1em"),
                 rx.grid(
-                    info_card("Teoría Económica",    "Análisis de las grandes corrientes del pensamiento económico: escuela austriaca, keynesianismo, monetarismo y sus implicaciones actuales."),
-                    info_card("Análisis de Mercados","Seguimiento de mercados financieros globales con enfoque en renta variable, divisas, commodities y tasas de interés."),
-                    info_card("Macroeconomía",       "Política fiscal, monetaria y cambiaria. Coyuntura económica de Colombia y América Latina en perspectiva global."),
-                    info_card("Microeconomía",       "Teoría del consumidor, organización industrial, competencia y regulación. Casos prácticos y aplicaciones reales."),
+                    info_card("Economic Theory",    "Analysis of the major currents of economic thought: Austrian school, Keynesianism, monetarism and their current implications."),
+                    info_card("Market Analysis",    "Tracking of global financial markets with a focus on equities, currencies, commodities and interest rates."),
+                    info_card("Macroeconomics",     "Fiscal, monetary and exchange rate policy. Economic outlook for Colombia and Latin America in a global perspective."),
+                    info_card("Microeconomics",     "Consumer theory, industrial organization, competition and regulation. Practical cases and real-world applications."),
                     columns="2", spacing="4", width="100%",
                 ),
 
-                # Principios editoriales
+                # Editorial principles
                 rx.box(height="2.5em"),
-                section_header("PRINCIPIOS EDITORIALES"),
+                section_header("EDITORIAL PRINCIPLES"),
                 accent_divider(),
                 rx.box(height="1em"),
                 panel(
                     rx.vstack(
-                        info_card("Independencia", "Sin afiliaciones políticas ni intereses comerciales. El análisis sigue la evidencia, no las conveniencias."),
-                        info_card("Rigor",         "Cada argumento se sustenta en evidencia empírica o fundamentos teóricos sólidos."),
-                        info_card("Claridad",      "El conocimiento económico debe ser accesible. Escribimos para lectores inteligentes, no necesariamente especialistas."),
-                        info_card("Largo plazo",   "Evitamos el ruido de corto plazo. Nos interesan las tendencias estructurales, los ciclos y los patrones que perduran."),
+                        info_card("Independence", "No political affiliations or commercial interests. The analysis follows the evidence, not convenience."),
+                        info_card("Rigor",        "Every argument is supported by empirical evidence or solid theoretical foundations."),
+                        info_card("Clarity",      "Economic knowledge should be accessible. We write for intelligent readers, not necessarily specialists."),
+                        info_card("Long-term",    "We avoid short-term noise. We are interested in structural trends, cycles and patterns that endure."),
                         align_items="start", spacing="3", width="100%",
                     ),
                 ),
 
-                # Contacto
+                # Contact
                 rx.box(height="2.5em"),
-                section_header("CONTACTO"),
+                section_header("CONTACT"),
                 accent_divider(),
                 rx.box(height="1em"),
                 panel(
                     rx.hstack(
-                        rx.text("Para colaboraciones, sugerencias o consultas:"),
+                        rx.text("For collaborations, suggestions or inquiries:"),
                         rx.link("elclubdelosmarginalistas@gmail.com", href="mailto:elclubdelosmarginalistas@gmail.com"),
                         spacing="2", align="center", flex_wrap="wrap",
                     ),

@@ -30,15 +30,15 @@ class AuthState(rx.State):
 
     def login(self):
         if not self.email or not self.password:
-            self.message = "❌ Ingresá email y contraseña."
+            self.message = "❌ Please enter email and password."
             return
         result = auth_login(self.email, self.password)
         if not result["ok"]:
-            self.message = "❌ Credenciales incorrectas."
+            self.message = "❌ Incorrect credentials."
             return
         usuario = get_usuario_by_email(self.email)
         if not usuario:
-            self.message = "❌ Tu cuenta no tiene acceso asignado. Contactá al admin."
+            self.message = "❌ Your account has no access assigned. Contact the admin."
             return
         self.user_email = usuario.email
         self.user_role  = usuario.role
@@ -64,7 +64,7 @@ class AuthState(rx.State):
 def login_page() -> rx.Component:
     return page_wrapper(
         login_navbar(),
-        page_hero("ACCESO", "Iniciar sesión"),
+        page_hero("ACCESS", "Log in"),
         rx.box(
             panel(
                 rx.vstack(
@@ -72,14 +72,14 @@ def login_page() -> rx.Component:
                     form_field("Email", rx.input(
                         value=AuthState.email, on_change=AuthState.set_email,
                         on_key_down=AuthState.handle_key_down,
-                        placeholder="tu@correo.com", type="email", **input_style,
+                        placeholder="your@email.com", type="email", **input_style,
                     )),
-                    form_field("Contraseña", rx.input(
+                    form_field("Password", rx.input(
                         value=AuthState.password, on_change=AuthState.set_password,
                         on_key_down=AuthState.handle_key_down,
                         placeholder="••••••••", type="password", **input_style,
                     )),
-                    btn_primary("Ingresar", on_click=AuthState.login, width="100%"),
+                    btn_primary("Log in", on_click=AuthState.login, width="100%"),
                     align_items="start", width="100%", spacing="4",
                 ),
             ),
